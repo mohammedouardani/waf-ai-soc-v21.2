@@ -2,9 +2,11 @@
 
 ## 1. Descripción
 
-El script `pipeline.py` es el componente encargado de procesar eventos dentro del pipeline interno del sistema WAF AI SOC v21.2 STABLE.
+El script `pipeline.py` es un componente encargado de procesar eventos JSON internos del sistema WAF AI SOC v21.2 STABLE.
 
-Su función es combinar la puntuación generada por el sistema V19 con la evaluación realizada por el motor AI para obtener una puntuación final de riesgo.
+Su función es combinar una puntuación previa del evento (`v19_score`) con la evaluación realizada por el motor AI para generar una puntuación final de riesgo (`final_score`).
+
+Este componente actúa como una capa de enriquecimiento de eventos dentro del procesamiento interno del sistema.
 
 ---
 
@@ -13,27 +15,29 @@ Su función es combinar la puntuación generada por el sistema V19 con la evalua
 Código fuente:
 
 ```text
-/opt/waf-v21.2/connectors/pipeline.py
+/opt/waf-v21.2-github/connectors/pipeline.py
 ```
-
 Dependencia utilizada:
-```text
-/opt/waf-v21.2/ai/scoring.py
+
+```bash
+/opt/waf-v21.2-github/ai/scoring.py
 ```
 ---
 
 ## 3. Funcionamiento general
 
-El Pipeline recibe un evento en formato JSON, ejecuta la evaluación AI y genera una puntuación final.
+El Pipeline Connector recibe una línea en formato JSON, convierte la información en un objeto evento y ejecuta la evaluación AI.
 
 Flujo:
 
 ```text
-
 Evento JSON
       |
       v
 pipeline.py
+      |
+      v
+Carga del evento
       |
       v
 AI Scoring Engine
@@ -44,7 +48,6 @@ Cálculo final_score
       v
 Evento enriquecido
 ```
-
 ---
 
 ## 4. Procesamiento del evento
@@ -55,29 +58,33 @@ La función principal es:
 
 La función realiza:
 
-Conversión de la línea JSON recibida a un objeto evento.
-
-Evaluación mediante:
-
-`ai_score(event)`
-
-Inserción del resultado:
-
-`event["ai_score"]`
+- Conversión del JSON recibido mediante `json.loads()`.
+- Evaluación del evento mediante:
+  `ai_score(event)`
+- Inserción del resultado AI:
+ `event["ai_score"]`
+- Cálculo de la puntuación final:
+ `event["final_score"]`
 
 ---
 
 ## 5. Cálculo de puntuación final
 
-El Pipeline calcula:
+El Pipeline combina dos valores:
 
-final_score = (v19_score * 0.4) + (ai_score * 0.6)
+```text
+final_score =
+(v19_score * 0.4) +
+(ai_score * 0.6)
+```
 
-La puntuación final combina:
+Distribución:
 
-40%  Sistema V19
-
-60%  Motor AI
+```text
+40%  v19_score
+60%  AI Score
+```
+El resultado final se convierte a entero antes de devolver el evento.
 
 ---
 
@@ -85,27 +92,41 @@ La puntuación final combina:
 
 El evento procesado contiene:
 
+```text
 v19_score
 ai_score
 final_score
-
-y es devuelto como evento enriquecido para las siguientes etapas del sistema.
+```
+El resultado se devuelve como un evento enriquecido para las siguientes etapas del procesamiento.
 
 ---
 
-## 7. Integración dentro del sistema
+## 7. Diferencia con events.pipe
 
-El Pipeline actúa como capa de combinación entre el análisis tradicional y el motor AI:
+Este componente no corresponde al canal FIFO del sistema.
+
+El archivo:
 
 ```text
-V19 Score
-     |
-     v
+events.pipe
+```
+es utilizado como mecanismo de comunicación entre Collector y AI Processor.
+
+El Pipeline Connector es una capa interna de procesamiento de eventos JSON.
+
+---
+
+## 8. Integración dentro del sistema
+
+```text
+Evento JSON
+      |
+      v
 Pipeline Connector
-     |
-     +------ AI Scoring
-     |
-     v
+      |
+      +---- AI Scoring
+      |
+      v
 Final Score
 ```
 
