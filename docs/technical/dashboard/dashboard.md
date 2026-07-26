@@ -120,8 +120,10 @@ Estado de los componentes de defensa:
 
 - ModSecurity
 - OWASP CRS
-- SQLite
-- UFW
+- AI Engine
+- SQLite SOC DB
+- Fail2Ban Blocking
+- UFW Firewall
 
 ### Eventos en tiempo real
 
@@ -141,6 +143,26 @@ El Dashboard consulta las últimas acciones:
 ```text
 ACTION=BLOCK
 ```
+### Módulos adicionales de visualización
+
+El Dashboard incorpora módulos adicionales para facilitar el análisis operativo del SOC.
+
+#### Attack Trend
+
+Gráfico temporal que representa la evolución de los ataques detectados por el sistema.
+
+#### Top Attackers
+
+Listado de las direcciones IP con mayor actividad registrada.
+
+#### Response Layer
+
+Módulo de visualización del estado de las capas de respuesta:
+
+- Fail2Ban.
+- UFW Firewall.
+- Últimas IP bloqueadas.
+
 ---
 
 ## 7. Integración dentro del sistema
