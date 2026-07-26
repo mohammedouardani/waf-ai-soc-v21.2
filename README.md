@@ -62,6 +62,7 @@ Dashboard
 Esta arquitectura representa el flujo general del sistema WAF AI SOC v21.2 STABLE, donde cada componente cumple una función dentro del ciclo de detección, análisis y respuesta ante eventos de seguridad.
 
 ---
+
 ## Gestión de bloqueos
 
 Durante la fase de experimentación y validación, las acciones de bloqueo tienen como objetivo comprobar el correcto funcionamiento de la cadena defensiva del sistema.
