@@ -2,9 +2,11 @@
 
 ## 1. Descripción
 
-El script `ai_fail2ban_bridge.py` es el conector encargado de enlazar los eventos de bloqueo generados por el sistema WAF AI SOC con el registro de eventos de seguridad.
+El script `ai_fail2ban_bridge.py` es un componente encargado de conectar las acciones de bloqueo generadas por el sistema WAF AI SOC v21.2 STABLE con el registro interno de eventos defensivos.
 
-Su función es monitorizar el log de bloqueos, detectar acciones `BLOCK` y registrar las IP bloqueadas en el log de eventos del sistema.
+Su función es monitorizar el log de bloqueos generado por la capa de defensa y transformar las acciones `BLOCK` en eventos registrados dentro del sistema.
+
+Este componente actúa como puente entre la respuesta automática mediante Fail2Ban/UFW y el sistema de monitorización SOC.
 
 ---
 
@@ -13,18 +15,19 @@ Su función es monitorizar el log de bloqueos, detectar acciones `BLOCK` y regis
 Código fuente:
 
 ```text
-/opt/waf-v21.2/connectors/ai_fail2ban_bridge.py
+/opt/waf-v21.2-github/connectors/ai_fail2ban_bridge.py
 ```
-Archivo de entrada:
+Logs utilizados:
+
+Origen:
+```text
+/opt/waf-v21.2/logs/waf-ai-ban.log
+```
+
+Destino:
 
 ```text
-/opt/waf-v21/logs/waf-ai-ban.log
-```
-
-Archivo de salida:
-
-```text
-/opt/waf-v21/logs/waf-ai-events.log
+/opt/waf-v21.2/logs/waf-ai-events.log
 ```
 ---
 
@@ -35,81 +38,90 @@ El Bridge mantiene una lectura continua del log de bloqueos.
 Flujo:
 
 ```text
-WAF AI SOC BLOCK Event
-          |
-          v
+Evento AI BLOCK
+        |
+        v
 waf-ai-ban.log
-          |
-          v
+        |
+        v
 ai_fail2ban_bridge.py
-          |
-          v
-waf-ai-events.log
+        |
+        v
+Detección ACTION=BLOCK
+        |
+        v
+Extracción IP
+        |
+        v
+Registro SOC Event
 ```
-
 ---
 
-## 4. Procesamiento de eventos
+## 4. Procesamiento del evento
 
-La función `process()` analiza cada línea recibida.
+La función principal es:
 
-Solo procesa eventos que contienen:
+`process(line)`
+
+Realiza las siguientes acciones:
+
+Comprueba si la línea contiene:
 
 ```text
 ACTION=BLOCK
 ```
+Extrae la dirección IP mediante expresión regular.
 
-Las líneas sin esta acción son ignoradas.
+Evita registrar varias veces la misma IP mediante:
 
----
+`seen = set()`
 
-## 5. Extracción de IP
-
-El Bridge obtiene la dirección IP mediante una expresión regular:
-
-IP=192.168.1.100
-
-Cuando encuentra una IP válida, genera un registro:
-
-`TIMESTAMP BLOCK IP=x.x.x.x`
+Genera una entrada en el log de eventos.
 
 ---
 
-## 6. Control de duplicados
+## 5. Registro generado
 
-El script mantiene un conjunto interno:
+Cuando se detecta un bloqueo válido se añade una entrada:
 
 ```text
-seen
+TIMESTAMP BLOCK IP=x.x.x.x
 ```
+El registro queda almacenado en:
 
-para evitar registrar varias veces la misma IP durante la ejecución del proceso.
+```text
+waf-ai-events.log
+```
+---
+
+## 6. Monitorización continua
+
+La función:
+
+`main()`
+
+abre el log origen y se posiciona al final del archivo:
+
+`seek(0,2)`
+
+Después mantiene una lectura continua esperando nuevos eventos.
+
+Cuando no existen nuevas líneas, realiza una espera:
+
+`time.sleep(1)`
 
 ---
 
-## 7. Lectura continua del log
+## 7. Integración dentro del sistema
 
-La función `main()` mantiene una lectura permanente del archivo origen.
-
-El proceso comienza desde el final del archivo:
-
-```python
-seek(0,2)
-```
-
-y espera nuevas líneas generadas por el sistema.
-
----
-
-## 8. Integración dentro del sistema
-
-El Bridge forma parte del flujo de defensa activa:
-
-```text 
+```text
 AI Processor
       |
       v
-ACTION=BLOCK
+Decisión BLOCK
+      |
+      v
+Fail2Ban + UFW
       |
       v
 waf-ai-ban.log
@@ -119,4 +131,20 @@ AI Fail2Ban Bridge
       |
       v
 waf-ai-events.log
+      |
+      v
+Dashboard / SOC
 ```
+---
+
+## 8. Diferencia con events.pipe
+
+Este componente no utiliza el canal FIFO:
+
+```text
+events.pipe
+```
+El FIFO se utiliza para comunicación entre Collector y AI Processor.
+
+`ai_fail2ban_bridge.py` trabaja con logs de defensa y eventos de bloqueo.
+
