@@ -1,0 +1,22 @@
+WAF AI SOC
+
+Version : v21.2 STABLE
+Date    : 2026-07-17
+
+Modules
+--------
+- ModSecurity
+- OWASP CRS
+- Collector v21
+- AI Processor
+- Pattern Memory Engine
+- Reputation Engine
+- Context Bonus
+- SQLite
+- Dashboard API
+- Fail2Ban Integration
+- UFW Auto Block
+
+Status
+------
+PRODUCTION STABLE

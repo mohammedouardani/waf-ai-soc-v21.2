@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+
+# Databases
+db/*.db
+db/*.sqlite*
+!db/.gitkeep
+
+# Runtime logs
+logs/
+
+# Named pipes
+connectors/events.pipe
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
