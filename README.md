@@ -93,34 +93,6 @@ Los bloqueos generados durante las pruebas forman parte del proceso de aprendiza
 
 ---
 
-## Gestión de bloqueos
-
-Durante la fase de experimentación y validación, las acciones de bloqueo tienen como objetivo comprobar el correcto funcionamiento de la cadena defensiva del sistema.
-
-Cuando un evento supera los criterios definidos por el motor de análisis, el sistema puede ejecutar una acción de defensa mediante la integración con los mecanismos de bloqueo configurados.
-
-Ejemplo de flujo:
-
-```text
-Evento sospechoso
-        |
-        v
-AI Processor
-        |
-        v
-Evaluación de riesgo
-        |
-        v
-Clasificación CRITICAL
-        |
-        v
-Acción BLOCK
-        |
-        v
-Defensa automática
-```
----
-
 ## Componentes principales
 
 ### Nginx
