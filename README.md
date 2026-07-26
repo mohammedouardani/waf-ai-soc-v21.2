@@ -93,6 +93,34 @@ Los bloqueos generados durante las pruebas forman parte del proceso de aprendiza
 
 ---
 
+## Gestión de bloqueos
+
+Durante la fase de experimentación y validación, las acciones de bloqueo tienen como objetivo comprobar el correcto funcionamiento de la cadena defensiva del sistema.
+
+Cuando un evento supera los criterios definidos por el motor de análisis, el sistema puede ejecutar una acción de defensa mediante la integración con los mecanismos de bloqueo configurados.
+
+Ejemplo de flujo:
+
+```text
+Evento sospechoso
+        |
+        v
+AI Processor
+        |
+        v
+Evaluación de riesgo
+        |
+        v
+Clasificación CRITICAL
+        |
+        v
+Acción BLOCK
+        |
+        v
+Defensa automática
+```
+---
+
 ## Componentes principales
 
 ### Nginx
@@ -249,15 +277,15 @@ Estado actual:
 
 - Arquitectura WAF AI SOC implementada.
 - ModSecurity y OWASP CRS integrados.
-- Collector operativo para eventos de seguridad.
-- AI Processor funcional con clasificación y puntuación de riesgo.
-- Base de datos SQLite integrada.
-- API Flask operativa.
-- Dashboard web disponible.
-- Integración Fail2Ban + UFW para respuesta automática.
+- Collector operativo para la recopilación de eventos de seguridad.
+- AI Processor funcional con análisis, clasificación y puntuación de riesgo.
+- Base de datos SQLite integrada para persistencia de eventos.
+- API Flask operativa para comunicación interna del sistema.
+- Dashboard web disponible para monitorización.
+- Integración Fail2Ban + UFW para respuesta automática ante eventos críticos.
 - Documentación técnica completada.
 
-La versión v21.2 STABLE queda establecida como base de referencia para futuras evoluciones del proyecto.
+La versión v21.2 STABLE queda establecida como base de referencia para futuras evoluciones del proyecto, manteniendo una arquitectura modular orientada a análisis, detección y respuesta dentro de un entorno WAF AI SOC.
 
 ---
 
