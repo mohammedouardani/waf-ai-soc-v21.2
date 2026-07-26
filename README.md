@@ -63,6 +63,36 @@ Fail2Ban + UFW
 Esta arquitectura representa el flujo general del sistema WAF AI SOC v21.2 STABLE, donde cada componente cumple una función dentro del ciclo de detección, análisis y respuesta ante eventos de seguridad.
 
 ---
+## Gestión de bloqueos
+
+Durante la fase de experimentación y validación, las acciones de bloqueo tienen como objetivo comprobar el correcto funcionamiento de la cadena defensiva del sistema.
+
+Cuando un evento supera los criterios definidos por el motor de análisis, el sistema puede ejecutar una acción de defensa mediante la integración con los mecanismos de bloqueo configurados.
+
+Ejemplo de flujo:
+
+```text
+Evento sospechoso
+        |
+        v
+AI Processor
+        |
+        v
+Evaluación de riesgo
+        |
+        v
+Clasificación CRITICAL
+        |
+        v
+Acción BLOCK
+        |
+        v
+Defensa automática
+```
+
+Los bloqueos generados durante las pruebas forman parte del proceso de aprendizaje, ajuste y validación de la arquitectura. Antes de un uso en producción, las políticas de bloqueo deben revisarse y adaptarse al entorno donde se despliegue el sistema.
+
+---
 
 ## Componentes principales
 
