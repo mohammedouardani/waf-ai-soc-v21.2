@@ -48,17 +48,16 @@ Collector
     v
 AI Processor
     |
-    v
-SQLite Database
-    |
-    v
-Flask API
+    +----------------+
+    |                |
+    v                v
+SQLite Database     Acción defensiva
+    |                |
+    v                v
+Flask API        Fail2Ban + UFW
     |
     v
 Dashboard
-    |
-    v
-Fail2Ban + UFW
 ```
 Esta arquitectura representa el flujo general del sistema WAF AI SOC v21.2 STABLE, donde cada componente cumple una función dentro del ciclo de detección, análisis y respuesta ante eventos de seguridad.
 
