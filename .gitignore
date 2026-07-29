@@ -12,3 +12,6 @@ backup/
 archive/
 
 dashboard.backup.*/
+
+db/
+ai/*.v21.2-bantime
