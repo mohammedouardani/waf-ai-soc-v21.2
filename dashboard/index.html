@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>WAF AI SOC v21.2 STABLE</title>
+<link rel="icon" href="/favicon.ico">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<h1> WAF AI SOC v21.2 STABLE</h1>
+
+<div class="system-online">
+
+🟢 SYSTEM ONLINE
+
+</div>
+
+
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Total Attacks</h3>
+
+<div class="small" id="attacks">0</div>
+
+</div>
+
+<div class="card">
+
+<h3>Unique IPs</h3>
+
+<div class="small" id="ips">0</div>
+
+</div>
+
+<div class="card">
+
+<h3>Highest Score</h3>
+
+<div class="small" id="score">0</div>
+
+</div>
+
+<div class="card">
+
+<h3>Average Score</h3>
+
+<div class="small" id="avgScore">0</div>
+
+</div>
+
+<div class="card">
+
+<h3>System Health</h3>
+
+<table>
+
+<tbody>
+
+<tr><td>API</td><td id="sysApi">-</td></tr>
+<tr><td>Collector</td><td id="sysCollector">-</td></tr>
+<tr><td>Processor</td><td id="sysProcessor">-</td></tr>
+<tr><td>Nginx</td><td id="sysNginx">-</td></tr>
+<tr><td>Fail2Ban</td><td id="sysFail2ban">-</td></tr>
+
+<tr><td>CPU</td><td id="sysCpu">-</td></tr>
+<tr><td>RAM</td><td id="sysRam">-</td></tr>
+<tr><td>DISK</td><td id="sysDisk">-</td></tr>
+<tr><td>UPTIME</td><td id="sysUptime">-</td></tr>
+
+</tbody>
+
+</table>
+</div>
+
+
+<div class="card">
+<h3>Defense Stack</h3>
+<table>
+
+<tbody>
+
+<tr><td>ModSecurity</td><td id="defModsec">-</td></tr>
+<tr><td>OWASP CRS</td><td id="defCRS">-</td></tr>
+<tr><td>AI Engine</td><td id="defProcessor">-</td></tr>
+<tr><td>SQLite SOC DB</td><td id="defSQLite">-</td></tr>
+<tr><td>Fail2Ban Blocking</td><td id="defFail2ban">-</td></tr>
+<tr><td>UFW Firewall</td><td id="defUfw">-</td></tr>
+
+</tbody>
+
+</table>
+</div>
+
+<div class="card half">
+
+<h3>Attack Trend</h3>
+
+<canvas id="chart"></canvas>
+
+</div>
+
+<div class="card half">
+
+<h3>Top Attackers</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>IP</th>
+
+<th>Hits</th>
+
+</tr>
+
+</thead>
+
+<tbody id="topTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card half">
+
+<h3>Response Layer</h3>
+
+<table>
+
+<tbody>
+
+<tr>
+<td>Fail2Ban</td>
+<td id="respF2b">🟢 Active</td>
+</tr>
+
+<tr>
+<td colspan="2"><strong>Last Blocked IPs</strong></td>
+</tr>
+
+<tr>
+<td colspan="2" id="respLastIps">-</td>
+</tr>
+
+<tr>
+<td>UFW</td>
+<td id="respUfw">🟢 Active</td>
+</tr>
+
+<tr>
+<td>Policy</td>
+<td id="respPolicy">DENY (IN)</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card full">
+
+<h3>Live Events</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>IP</th>
+
+<th>URI</th>
+
+<th>Score</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="liveTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<footer>
+
+WAF AI SOC v21.2 STABLE • Mohammed OUARDANI • 2026
+
+</footer>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

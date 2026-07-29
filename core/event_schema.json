@@ -1,0 +1,11 @@
+{
+  "ip": "string",
+  "ts": "datetime",
+  "uri": "string",
+  "method": "string",
+  "v19_score": "int",
+  "ai_score": "int",
+  "final_score": "int",
+  "tags": ["rce", "scan", "cms_probe"],
+  "campaign_id": "string"
+}
